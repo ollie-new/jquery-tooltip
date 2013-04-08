@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+	<head>
+		<title>Tool Tip</title>
+		
+		<style>
+			.box {
+				cursor: pointer;
+				width: 300px;
+				float: left;
+				margin-right: 10px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+				padding: 10px;
+			}
+			
+			#tool_tip {
+				background-image: url(img/arrow_down.png);
+				background-position: bottom center;
+				background-repeat: no-repeat;
+				padding-bottom: 11px;
+				text-align: center;
+				width: 100px;
+				display: none;
+				z-index: 1000;
+				position : absolute;
+			}
+			
+			#tool_tip div {
+				background-color: black;
+				border-radius: 5px;
+				padding: 5px;
+				color: white;
+			}
+		</style>
+		
+		<script src="http://code.jquery.com/jquery-1.7.1.js"></script>
+
+		<script>
+			$(document).ready(function() {
+			
+				$.fn.toolTip = function(direction, fn) {
+				
+					/*
+					tool tip creator
+					@param direction	the direction to make the tooltip appear from: up or down
+					@param fn			the callback function to do when complete
+					*/
+								
+					$(this).on({
+						mouseenter: function() {		
+							var $tooltip = '',
+								$this = $(this),
+								$outer_width = $this.outerWidth(),
+								$offset = $this.offset(),
+								$margin_height = '';
+								$left = '';
+								
+							(direction) === 'up' ? $margin_height = 5 : $margin_height = -5
+							
+							//remove any other tooltips that might exist
+							$('#tool_tip').remove();
+									
+							//add new tooltip to the dom and set vars
+							$('body').append($('<div id="tool_tip"><div>'+$this.data('tool_tip')+'</div></div>'));
+							$tooltip = $('#tool_tip');
+							$left = $offset.left+($outer_width/2)-($tooltip.outerWidth()/2);
+							
+							//set top and left position for tooltip
+							$tooltip.css({'top' : $offset.top-$tooltip.outerHeight()+'px',
+										   'left' : $left,
+										   'margin-top' : $margin_height
+										  });
+							
+							//show tooltip
+							$tooltip.animate({
+								'opacity': 'toggle',
+								'margin-top' : '0px'
+							},200);
+						},
+					
+						mouseleave: function() {
+							$('#tool_tip').remove();
+						}
+					});
+					return $(this);
+				}
+				
+/*
+				//example usage (old version)
+				$('.box').on({	
+					mouseenter: function() {
+						var $this = $(this);		
+						$this.toolTip('up');
+					},
+					
+					mouseleave: function() {
+						$('#tool_tip').remove();
+					}
+				});
+*/
+				//example usage (new version)
+				$('.box').toolTip('up');
+			});		
+		</script>
+		
+	</head>
+	
+	<body>
+		
+		<h1>Header</h1>
+		
+		<div class="box" data-tool_tip = "This is box 1">
+			<h2>Some content here</h2>
+			<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan metus ac tellus iaculis et aliquam lacus accumsan. Nunc auctor sapien id tortor euismod ut consectetur sem placerat. Maecenas nisl dolor, porta ac commodo sed, molestie quis purus. Sed in dolor eget mauris tristique elementum sit amet sit amet turpis. Fusce feugiat faucibus enim, sit amet tempor diam bibendum quis. Ut tortor nisl, posuere at mattis nec, tristique non odio. Sed non metus odio.
+			</p>
+		</div>
+		
+		<div class="box" data-tool_tip = "This is box 2">
+			<h2>Some content here</h2>
+			<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan metus ac tellus iaculis et aliquam lacus accumsan. Nunc auctor sapien id tortor euismod ut consectetur sem placerat. Maecenas nisl dolor, porta ac commodo sed, molestie quis purus. Sed in dolor eget mauris tristique elementum sit amet sit amet turpis. Fusce feugiat faucibus enim, sit amet tempor diam bibendum quis. Ut tortor nisl, posuere at mattis nec, tristique non odio. Sed non metus odio.
+			</p>
+		</div>
+		
+		<div class="box" data-tool_tip = "This is box 3">
+			<h2>Some content here</h2>
+			<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan metus ac tellus iaculis et aliquam lacus accumsan. Nunc auctor sapien id tortor euismod ut consectetur sem placerat. Maecenas nisl dolor, porta ac commodo sed, molestie quis purus. Sed in dolor eget mauris tristique elementum sit amet sit amet turpis. Fusce feugiat faucibus enim, sit amet tempor diam bibendum quis. Ut tortor nisl, posuere at mattis nec, tristique non odio. Sed non metus odio.
+			</p>
+		</div>
+		
+	</body>
+	
+</html>
